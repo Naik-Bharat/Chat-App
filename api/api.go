@@ -1,7 +1,9 @@
 package api
 
 import (
+	"errors"
 	"log"
+	"strconv"
 
 	"github.com/Naik-Bharat/chat-app/database"
 	"github.com/gofiber/fiber/v2"
@@ -12,24 +14,40 @@ type client struct {
 	conn *websocket.Conn
 }
 
-// // map of all clients with room nos
-// var clients map[int]*client
-var clients []*client
+// map of all clients with room nos
+var clients map[int][]*client = make(map[int][]*client)
+
+// function to delete a connection from slice of connections, returns same slice if connection not found
+func deleteConection(connections []*client, connection *websocket.Conn) ([]*client, error) {
+	for index, element := range connections {
+		if element.conn == connection {
+			return append(connections[:index], connections[index+1:]...), nil
+		}
+	}
+	return connections, errors.New("could not find connection")
+}
 
 func HandleWebSocket(c *websocket.Conn) {
-	clients = append(clients, &client{c})
-	log.Println(c.Locals("allowed"))
-	log.Println(c.Params("id"))
+	roomId, err := strconv.Atoi(c.Params("roomId"))
+	if err != nil {
+		log.Println("Error converitng room number to int", err)
+	}
+	log.Println("New connection made to room no.", roomId)
+	// add connection to list of connections on this room number
+	clients[roomId] = append(clients[roomId], &client{c})
 
 	var (
 		msgType int
 		msg     []byte
-		err     error
 	)
 
 	c.SetCloseHandler(func(code int, text string) error {
 		log.Println("Connection closed with status code", code)
 		// remove from list of connections
+		clients[roomId], err = deleteConection(clients[roomId], c)
+		if err != nil {
+			log.Println("Error removing connections", err)
+		}
 		return nil
 	})
 
