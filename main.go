@@ -19,6 +19,5 @@ func main() {
 
 	app.Get("/ws/:roomId", websocket.New(api.HandleWebSocket))
 
-	app.Post("/api/receive", api.GetMsgHistory)
 	app.Listen(":8080")
 }
