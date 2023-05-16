@@ -13,19 +13,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className='container mx-auto px-6'>
+      <body className='container mx-auto px-6 bg-white dark:bg-black text-black dark:text-white'>
         <header className='py-7'>
-          {/* <nav className='hidden sm:block'> */}
           <nav>
             <div className='items-center flex justify-between'>
-              <div className='logo text-xl'>Chat App</div>
-              <ul className='justify-between'>
-                <li className=''>
-                    <Link href='https://github.com/Naik-Bharat/chat-app' target={"_blank"}>
-                      <button className='rounded-md bg-blue-800 px-3 py-1'>Star project on Github</button>
-                    </Link>
-                </li>
-              </ul>
+              <div className='logo text-2xl font-bold'>Chat App</div>
+                <Link href='https://github.com/Naik-Bharat/chat-app' target={"_blank"}>
+                  <button className='rounded-md bg-blue-800 px-3 py-1 text-white'>Star project on Github</button>
+                </Link>
             </div>
           </nav>
         </header>
