@@ -1,9 +1,27 @@
+import React, { useState } from "react";
+
 type Props = {
-  isVisible: boolean
+  handleSubmit: (submittedName: string, submittedRoomID: string) => void
 }
 
-const Modal = ({ isVisible }: Props) => {
-  return isVisible? (
+const Modal = ({ handleSubmit }: Props) => {
+  const [name, setName] = useState("");
+  const [roomID, setRoomID] = useState("");
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  }
+
+  const handleRoomIDChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRoomID(event.target.value);
+  }
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault;
+    handleSubmit(name, roomID);
+  }
+
+  return (
     <div className="fixed inset-0 bg-white dark:bg-black">
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="w-[70%] sm:w-[450px]">
@@ -12,11 +30,11 @@ const Modal = ({ isVisible }: Props) => {
               <h2 className="text-2xl text-center font-bold">Chat App</h2>
               <p className="text-center">Enter details to enter chat room</p>
             </div>
-            <form className="space-y-2">
+            <form onSubmit={handleFormSubmit} className="space-y-2">
               <p className="text-lg">Name</p>
-              <input type="text" name="name" placeholder="Jason" className="rounded-sm border border-black dark:border-white w-[100%] px-2 py-1" />
-              <p>Room ID</p>
-              <input type="text" name="roomID" placeholder="123" className="rounded-sm border border-black dark:border-white w-[100%] px-2 py-1" />
+              <input type="text" name="name" onChange={handleNameChange} placeholder="Jason" autoFocus className="rounded-sm text-black border border-black dark:border-white w-[100%] px-2 py-1" />
+              <p className="text-lg">Room ID</p>
+              <input type="text" name="roomID" onChange={handleRoomIDChange} placeholder="123" className="rounded-sm text-black border border-black dark:border-white w-[100%] px-2 py-1" />
               <div className="relative h-12 w-[100%]">
                   <button type="submit" className="absolute bottom-0 right-0 rounded-md bg-blue-800 px-3 py-1 text-white">Enter Room</button>
               </div>
@@ -25,7 +43,7 @@ const Modal = ({ isVisible }: Props) => {
         </div>
       </div>
     </div>
-  ) : null;
+  );
 }
 
 export default Modal;

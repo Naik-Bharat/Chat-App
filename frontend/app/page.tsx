@@ -16,11 +16,21 @@ export default function Home() {
     }
   })
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+  const [name, setName] = useState("");
+  const [roomID, setRoomID] = useState("");
+
+  const handleFormSubmit = (submittedName: string, submittedRoomID: string) => {
+    setName(submittedName);
+    setRoomID(submittedRoomID);
+    setShowModal(false);
+  }
 
   return (
     <div className='mx-6'>
-      <Modal isVisible={true} />
+      {showModal && (
+        <Modal handleSubmit={handleFormSubmit} />
+      )}
     </div>
   )
 }
