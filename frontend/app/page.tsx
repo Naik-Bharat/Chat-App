@@ -13,10 +13,12 @@ export default function Home() {
   const [name, setName] = useState("");
   const [roomID, setRoomID] = useState("");
 
+  const [msgList, setMsgList] = useState<string[]>([]);
+
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:8080/ws/" + roomID);
     socket.onmessage = ({ data }) => {
-      console.log(data);
+      setMsgList((msgList => [...msgList, data]));
     }
   }, [roomID])
 
@@ -31,6 +33,9 @@ export default function Home() {
       {showModal && (
         <Modal handleSubmit={handleFormSubmit} />
       )}
+      {msgList.map((item, index) => (
+        <div key={index}>{item}</div>
+      ))}
     </div>
   )
 }
