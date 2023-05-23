@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"errors"
 	"log"
 
@@ -9,6 +10,11 @@ import (
 
 type client struct {
 	conn *websocket.Conn
+}
+
+type message struct {
+	Name string `json:"name"`
+	Data string `json:"data"`
 }
 
 // map of all clients with room nos
@@ -52,6 +58,13 @@ func HandleWebSocket(c *websocket.Conn) {
 			break
 		}
 		log.Printf("recv: %s", msg)
+
+		var decodedMessage message
+		err := json.Unmarshal([]byte(msg), &decodedMessage)
+		if err != nil {
+			log.Println(err)
+		}
+		log.Println(decodedMessage.Name + " sent " + decodedMessage.Data)
 
 		// send msg to all connections except current connecton
 		for _, connection := range clients[roomId] {
