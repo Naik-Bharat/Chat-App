@@ -63,6 +63,7 @@ func HandleWebSocket(c *websocket.Conn) {
 		err := json.Unmarshal([]byte(msg), &decodedMessage)
 		if err != nil {
 			log.Println(err)
+			continue
 		}
 		log.Println(decodedMessage.Name + " sent " + decodedMessage.Data)
 
