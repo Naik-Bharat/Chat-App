@@ -32,9 +32,9 @@ const Modal = ({ handleSubmit }: Props) => {
             </div>
             <form onSubmit={handleFormSubmit} className="space-y-2">
               <p className="text-lg">Name</p>
-              <input type="text" name="name" onChange={handleNameChange} placeholder="Jason" autoFocus className="rounded-sm text-black border border-black dark:border-white w-[100%] px-2 py-1" />
+              <input type="text" name="name" onChange={handleNameChange} placeholder="Dev Sharma" autoFocus className="rounded-sm bg-zinc-200 dark:bg-zinc-900 w-[100%] px-2 py-1" />
               <p className="text-lg">Room ID</p>
-              <input type="text" name="roomID" onChange={handleRoomIDChange} placeholder="123" className="rounded-sm text-black border border-black dark:border-white w-[100%] px-2 py-1" />
+              <input type="text" name="roomID" onChange={handleRoomIDChange} placeholder="lobby" className="rounded-sm bg-zinc-200 dark:bg-zinc-900 w-[100%] px-2 py-1" />
               <div className="relative h-12 w-[100%]">
                   <button type="submit" className="absolute bottom-0 right-0 rounded-md bg-blue-800 px-3 py-1 text-white">Enter Room</button>
               </div>
