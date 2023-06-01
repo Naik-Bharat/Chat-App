@@ -1,12 +1,14 @@
 import { Message } from "@/app/page"
 
 //renders list of messages
-const RenderMessageList = ({msgList}: {msgList: Message[]}) => {
+const RenderMessageList = ({ msgList, className }: {msgList: Message[], className: string}) => {
   return (
-    <div className='container flex flex-col'>
-      {msgList.map((item, index) => (
-        <RenderMessage key={index} message={item} />
-      ))}
+    <div className={className}>
+      <div className='container flex flex-col'>
+        {msgList.map((item, index) => (
+          <RenderMessage key={index} message={item} />
+        ))}
+      </div>
     </div>
   )
 }

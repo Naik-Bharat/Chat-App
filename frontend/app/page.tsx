@@ -1,8 +1,6 @@
 'use client';
 
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import styles from './page.module.css'
 import Modal from '@/components/Modal';
 import RenderMessageList from '@/components/RenderMessageList';
 import MessageInput from '@/components/MessageInput';
@@ -37,15 +35,18 @@ export default function Home() {
   }
 
   return (
-    <div className='mx-6'>
-      {showModal && (
+    <div>
+      {showModal ? (
         <Modal handleSubmit={handleFormSubmit} />
-      )}
-      <RenderMessageList msgList={msgList} />
+        ): (
+        <div className='flex flex-col h-screen'>
+          <Header />
+          <RenderMessageList msgList={msgList} className='flex-grow' />
+          <MessageInput />
+        </div>
+      )
+      }
 
-      {!showModal && (
-        <MessageInput />
-      )}
     </div>
   )
 }
