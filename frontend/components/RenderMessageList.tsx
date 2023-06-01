@@ -5,7 +5,7 @@ const RenderMessageList = ({msgList}: {msgList: Message[]}) => {
   return (
     <div className='container flex flex-col'>
       {msgList.map((item, index) => (
-        <RenderMessage message={item} />
+        <RenderMessage key={index} message={item} />
       ))}
     </div>
   )
