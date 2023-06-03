@@ -17,7 +17,7 @@ const Modal = ({ handleSubmit }: Props) => {
   }
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault;
+    event.preventDefault();
     handleSubmit(name, roomID);
   }
 
