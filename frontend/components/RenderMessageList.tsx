@@ -1,9 +1,9 @@
 import { Message } from "@/app/page"
 
 //renders list of messages
-const RenderMessageList = ({ msgList, className }: {msgList: Message[], className: string}) => {
+const RenderMessageList = ({ msgList }: {msgList: Message[]}) => {
   return (
-    <div className={className}>
+    <div>
       <div className='container flex flex-col'>
         {msgList.map((item, index) => (
           <RenderMessage key={index} message={item} />

@@ -50,9 +50,15 @@ export default function Home() {
         <Modal handleSubmit={handleFormSubmit} />
         ): (
         <div className='flex flex-col h-screen'>
-          <Header />
-          <RenderMessageList msgList={msgList} className='flex-grow' />
-          <MessageInput handleMessageSubmission={addNewMessage} />
+          <div className='sticky top-0'>
+            <Header />
+          </div>
+          <div className='flex-grow overflow-y-auto'>
+            <RenderMessageList msgList={msgList} />
+          </div>
+          <div className='sticky bottom-0 mt-auto'>
+            <MessageInput handleMessageSubmission={addNewMessage} />
+          </div>
         </div>
       )
       }
