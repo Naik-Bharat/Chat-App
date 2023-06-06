@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"regexp"
+	"strings"
 	"unicode/utf8"
 
 	"github.com/gofiber/websocket/v2"
@@ -37,6 +38,11 @@ func HandleWebSocket(c *websocket.Conn) {
 
 	// regexp for AlphaNum
 	validAlphaNum, err := regexp.Compile("^[a-zA-Z0-9]+$")
+	if err != nil {
+		log.Println(err)
+	}
+	// regexp for AlphaNum and Space
+	validAlphaNumSpace, err := regexp.Compile(`^[a-zA-Z0-9\s]+$`)
 	if err != nil {
 		log.Println(err)
 	}
@@ -75,17 +81,22 @@ func HandleWebSocket(c *websocket.Conn) {
 		log.Printf("recv: %s", msg)
 
 		var decodedMessage message
-		err := json.Unmarshal([]byte(msg), &decodedMessage)
+		err := json.Unmarshal(msg, &decodedMessage)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
 
 		// check whether name follows alphanumeric regex and size constraints
-		regexMatch = validAlphaNum.MatchString(decodedMessage.Name)
+		regexMatch = validAlphaNumSpace.MatchString(decodedMessage.Name)
 		if !regexMatch || utf8.RuneCountInString(decodedMessage.Name) > 20 {
 			log.Println(decodedMessage.Name + " breaks name constraint")
 			continue
+		}
+		decodedMessage.Name = strings.TrimSpace(decodedMessage.Name)
+		msg, err = json.Marshal(message{Name: decodedMessage.Name, Data: decodedMessage.Data})
+		if err != nil {
+			log.Println(err)
 		}
 		log.Println(decodedMessage.Name + " sent " + decodedMessage.Data)
 

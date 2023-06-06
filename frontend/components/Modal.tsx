@@ -21,7 +21,7 @@ const Modal = ({ handleSubmit }: Props) => {
     const nameValue = event.target.value;
     setName(nameValue);
     if (nameValue) {
-      setNameAlpha(/^[a-zA-Z0-9]+$/.test(nameValue));
+      setNameAlpha(/^[a-zA-Z0-9\s]+$/.test(nameValue));
       setNameSize(nameValue.length <= 20);
     }
     else {
@@ -58,7 +58,7 @@ const Modal = ({ handleSubmit }: Props) => {
           </div>
           <form onSubmit={handleFormSubmit} className="space-y-2">
             <p className="text-lg">Name</p>
-            <input type="text" onChange={handleNameChange} pattern="[A-Za-z0-9]+" maxLength={20} required autoFocus placeholder="Dev Sharma" className="rounded-sm bg-zinc-200 dark:bg-zinc-900 w-[100%] px-2 py-1" />
+            <input type="text" onChange={handleNameChange} pattern="[A-Za-z0-9\s]+" maxLength={20} required autoFocus placeholder="Dev Sharma" className="rounded-sm bg-zinc-200 dark:bg-zinc-900 w-[100%] px-2 py-1" />
             {!nameAlpha && (
               <p className="text-sm text-red-600 text-right">Name should be alphanumeric</p>
             )}
