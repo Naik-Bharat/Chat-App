@@ -24,6 +24,10 @@ const Modal = ({ handleSubmit }: Props) => {
       setNameAlpha(/^[a-zA-Z0-9]+$/.test(nameValue));
       setNameSize(nameValue.length <= 20);
     }
+    else {
+      setNameAlpha(true);
+      setNameSize(true);
+    }
   }
 
   const handleRoomIDChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +36,10 @@ const Modal = ({ handleSubmit }: Props) => {
     if (roomIDValue) {
       setRoomIDAlpha(/^[a-zA-Z0-9]+$/.test(roomIDValue));
       setRoomIDSize(roomIDValue.length <= 20);
+    }
+    else {
+      setRoomIDAlpha(true);
+      setRoomIDSize(true);
     }
   }
 

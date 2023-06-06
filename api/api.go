@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
+	"regexp"
+	"unicode/utf8"
 
 	"github.com/gofiber/websocket/v2"
 )
@@ -32,6 +34,20 @@ func deleteConection(connections []*client, connection *websocket.Conn) ([]*clie
 
 func HandleWebSocket(c *websocket.Conn) {
 	roomId := c.Params("roomId")
+
+	// regexp for AlphaNum
+	validAlphaNum, err := regexp.Compile("^[a-zA-Z0-9]+$")
+	if err != nil {
+		log.Println(err)
+	}
+
+	// check whether roomID follows alphanumeric regex and size constraints
+	regexMatch := validAlphaNum.MatchString(roomId)
+	if !regexMatch || utf8.RuneCountInString(roomId) > 20 {
+		log.Println(roomId + " didn't follow constraints")
+		return
+	}
+
 	log.Println("New connection made to room no.", roomId)
 	// add connection to list of connections on this room number
 	clients[roomId] = append(clients[roomId], &client{c})
@@ -39,7 +55,6 @@ func HandleWebSocket(c *websocket.Conn) {
 	var (
 		msgType int
 		msg     []byte
-		err     error
 	)
 
 	c.SetCloseHandler(func(code int, text string) error {
@@ -63,6 +78,13 @@ func HandleWebSocket(c *websocket.Conn) {
 		err := json.Unmarshal([]byte(msg), &decodedMessage)
 		if err != nil {
 			log.Println(err)
+			continue
+		}
+
+		// check whether name follows alphanumeric regex and size constraints
+		regexMatch = validAlphaNum.MatchString(decodedMessage.Name)
+		if !regexMatch || utf8.RuneCountInString(decodedMessage.Name) > 20 {
+			log.Println(decodedMessage.Name + " breaks name constraint")
 			continue
 		}
 		log.Println(decodedMessage.Name + " sent " + decodedMessage.Data)
