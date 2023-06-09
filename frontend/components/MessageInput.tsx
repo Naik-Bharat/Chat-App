@@ -26,7 +26,15 @@ const MessageInput = ({ handleMessageSubmission }: Props) => {
     }
   }
 
+  const isPhone = () => {
+    const userAgent = navigator.userAgent.toLocaleLowerCase();
+    return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+  }
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (isPhone()) {
+      return;
+    }
     // handle submit when pressed enter
     if (event.key == "Enter" && !event.shiftKey) {
       event.preventDefault();
@@ -36,15 +44,17 @@ const MessageInput = ({ handleMessageSubmission }: Props) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleMessageSubmission(data);
-    setData("");
+    if (data.trim() != "") {
+      handleMessageSubmission(data);
+      setData("");
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} ref={formRef} className='flex justify-evenly my-8'>
       <textarea onChange={handleDataChange} onKeyDown={handleKeyPress} ref={textAreaRef} value={data} rows={1} required placeholder='Type your message here...' autoFocus className='resize-none max-h-48 rounded-sm bg-zinc-100 dark:bg-zinc-900 px-2 py-2 h-auto flex-grow' />
-      <button type='submit' className='ml-3 rounded-full self-end h-10 py-2 px-3 bg-blue-800'>
-        <Image src='/send-btn.svg' alt='Send Button' width={16} height={16} />
+      <button type='submit' className='ml-3 rounded-full self-end h-10 px-3'>
+        <Image src='/send-btn.svg' alt='Send Button' width={40} height={40} />
       </button>
     </form>
   )
