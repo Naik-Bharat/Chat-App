@@ -53,7 +53,8 @@ export default function Home() {
           <div className='relative top-0'>
             <Header />
           </div>
-          <div className='flex-grow overflow-y-auto'>
+          <div className='flex-grow'></div>
+          <div className='overflow-y-auto'>
             <RenderMessageList msgList={msgList} />
           </div>
           <div className='relative bottom-0 mt-auto'>
