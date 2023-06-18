@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/Naik-Bharat/chat-app/config"
 	"github.com/gofiber/websocket/v2"
 )
 
@@ -49,7 +50,7 @@ func HandleWebSocket(c *websocket.Conn) {
 
 	// check whether roomID follows alphanumeric regex and size constraints
 	regexMatch := validAlphaNum.MatchString(roomId)
-	if !regexMatch || utf8.RuneCountInString(roomId) > 20 {
+	if !regexMatch || utf8.RuneCountInString(roomId) > config.LoadConfig().RoomIDLimit {
 		log.Println(roomId + " didn't follow constraints")
 		return
 	}
@@ -89,7 +90,7 @@ func HandleWebSocket(c *websocket.Conn) {
 
 		// check whether name follows alphanumeric regex and size constraints
 		regexMatch = validAlphaNumSpace.MatchString(decodedMessage.Name)
-		if !regexMatch || utf8.RuneCountInString(decodedMessage.Name) > 20 {
+		if !regexMatch || utf8.RuneCountInString(decodedMessage.Name) > config.LoadConfig().NameLimit {
 			log.Println(decodedMessage.Name + " breaks name constraint")
 			continue
 		}
