@@ -1,10 +1,22 @@
 import { Message } from "@/app/page"
+import { useEffect, useRef } from "react"
 
 //renders list of messages
 const RenderMessageList = ({ msgList }: {msgList: Message[]}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const conatierElement = containerRef.current;
+    const lastMessageElement = conatierElement?.lastChild as HTMLDivElement;
+
+    if (lastMessageElement) {
+      lastMessageElement.scrollIntoView({
+        behavior: "smooth"
+      })
+    }
+  }, [msgList])
   return (
     <div>
-      <div className='container flex flex-col'>
+      <div ref={containerRef} className='container flex flex-col'>
         {msgList.map((item, index) => (
           <RenderMessage key={index} message={item} />
         ))}
