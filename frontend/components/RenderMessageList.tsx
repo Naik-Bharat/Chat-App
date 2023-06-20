@@ -5,13 +5,11 @@ import { useEffect, useRef } from "react"
 const RenderMessageList = ({ msgList }: {msgList: Message[]}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const conatierElement = containerRef.current;
-    const lastMessageElement = conatierElement?.lastChild as HTMLDivElement;
+    const contaierElement = containerRef.current;
+    const lastMessageElement = contaierElement?.lastChild as HTMLDivElement;
 
     if (lastMessageElement) {
-      lastMessageElement.scrollIntoView({
-        behavior: "smooth"
-      })
+      lastMessageElement.scrollIntoView();
     }
   }, [msgList])
   return (

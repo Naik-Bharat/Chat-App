@@ -6,6 +6,7 @@ import RenderMessageList from '@/components/RenderMessageList';
 import MessageInput from '@/components/MessageInput';
 import Header from '@/components/Header';
 import { useEffect, useRef, useState } from 'react';
+import LoadEnvVariables from '@/utils/env';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,10 +32,10 @@ export default function Home() {
 
   useEffect(() => {
     if (roomID) {
-    socketRef.current = new WebSocket("ws://localhost:8080/ws/" + roomID);
-    socketRef.current.onmessage = ({ data }) => {
-      setMsgList((msgList => [...msgList, {name: JSON.parse(data).name, data: JSON.parse(data).data}]));
-    }
+      socketRef.current = new WebSocket("ws://" + LoadEnvVariables().serverUrl + "/ws/" + roomID);
+      socketRef.current.onmessage = ({ data }) => {
+        setMsgList((msgList => [...msgList, {name: JSON.parse(data).name, data: JSON.parse(data).data}]));
+      }
     }
   }, [roomID])
 
@@ -63,7 +64,6 @@ export default function Home() {
         </div>
       )
       }
-
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import LoadEnvVariables from "@/utils/env";
 import React, { useState } from "react";
 
 type Props = {
@@ -22,7 +23,7 @@ const Modal = ({ handleSubmit }: Props) => {
     setName(nameValue);
     if (nameValue) {
       setNameAlpha(/^[a-zA-Z0-9\s]+$/.test(nameValue));
-      setNameSize(nameValue.length <= 20);
+      setNameSize(nameValue.length <= LoadEnvVariables().nameLimit);
     }
     else {
       setNameAlpha(true);
@@ -35,7 +36,7 @@ const Modal = ({ handleSubmit }: Props) => {
     setRoomID(roomIDValue);
     if (roomIDValue) {
       setRoomIDAlpha(/^[a-zA-Z0-9]+$/.test(roomIDValue));
-      setRoomIDSize(roomIDValue.length <= 20);
+      setRoomIDSize(roomIDValue.length <= LoadEnvVariables().roomIDLimit);
     }
     else {
       setRoomIDAlpha(true);
