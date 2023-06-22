@@ -6,6 +6,7 @@ import (
 	"log"
 	"regexp"
 	"strings"
+	"sync"
 	"unicode/utf8"
 
 	"github.com/Naik-Bharat/chat-app/config"
@@ -33,6 +34,8 @@ func deleteConection(connections []*client, connection *websocket.Conn) ([]*clie
 	}
 	return connections, errors.New("could not find connection")
 }
+
+var mutex sync.Mutex
 
 func HandleWebSocket(c *websocket.Conn) {
 	roomId := c.Params("roomId")
@@ -104,11 +107,13 @@ func HandleWebSocket(c *websocket.Conn) {
 		// send msg to all connections except current connecton
 		for _, connection := range clients[roomId] {
 			if connection.conn != c {
+				mutex.Lock()
 				if err := connection.conn.WriteMessage(msgType, msg); err != nil {
 					log.Println("write:", err)
-					break
+					continue
 				}
 				log.Printf("send: %s", msg)
+				mutex.Unlock()
 			}
 		}
 	}
