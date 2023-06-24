@@ -14,7 +14,8 @@ import (
 )
 
 type client struct {
-	conn *websocket.Conn
+	conn  *websocket.Conn
+	mutex sync.Mutex
 }
 
 type message struct {
@@ -34,8 +35,6 @@ func deleteConection(connections []*client, connection *websocket.Conn) ([]*clie
 	}
 	return connections, errors.New("could not find connection")
 }
-
-var mutex sync.Mutex
 
 func HandleWebSocket(c *websocket.Conn) {
 	roomId := c.Params("roomId")
@@ -60,7 +59,7 @@ func HandleWebSocket(c *websocket.Conn) {
 
 	log.Println("New connection made to room no.", roomId)
 	// add connection to list of connections on this room number
-	clients[roomId] = append(clients[roomId], &client{c})
+	clients[roomId] = append(clients[roomId], &client{c, sync.Mutex{}})
 
 	var (
 		msgType int
@@ -107,13 +106,13 @@ func HandleWebSocket(c *websocket.Conn) {
 		// send msg to all connections except current connecton
 		for _, connection := range clients[roomId] {
 			if connection.conn != c {
-				mutex.Lock()
+				connection.mutex.Lock()
 				if err := connection.conn.WriteMessage(msgType, msg); err != nil {
 					log.Println("write:", err)
 					continue
 				}
 				log.Printf("send: %s", msg)
-				mutex.Unlock()
+				connection.mutex.Unlock()
 			}
 		}
 	}
