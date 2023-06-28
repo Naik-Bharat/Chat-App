@@ -32,7 +32,7 @@ export default function Home() {
 
   useEffect(() => {
     if (roomID) {
-      socketRef.current = new WebSocket("ws://" + LoadEnvVariables().serverUrl + "/ws/" + roomID);
+      socketRef.current = new WebSocket(LoadEnvVariables().serverUrl + "/ws/" + roomID);
       socketRef.current.onmessage = ({ data }) => {
         setMsgList((msgList => [...msgList, {name: JSON.parse(data).name, data: JSON.parse(data).data}]));
       }
