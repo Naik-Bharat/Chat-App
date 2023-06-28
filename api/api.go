@@ -108,7 +108,12 @@ func HandleWebSocket(c *websocket.Conn) {
 			if connection.conn != c {
 				connection.mutex.Lock()
 				if err := connection.conn.WriteMessage(msgType, msg); err != nil {
+					// removing client when unable to write to webscoket connection
 					log.Println("write:", err)
+					clients[roomId], err = deleteConection(clients[roomId], c)
+					if err != nil {
+						log.Println("Error removing connections", err)
+					}
 					continue
 				}
 				log.Printf("send: %s", msg)
